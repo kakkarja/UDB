@@ -8,6 +8,7 @@ Created on Fri Nov  3 22:04:09 2017
 import os
 import unicodedata as unic
 from pathlib import Path
+import pandas as pd
 
 # Translate a Unicode to Character
 def tra_cr(kata):
@@ -68,6 +69,8 @@ def create_db():
     Uni_at.set_chr()
     Uni_at.cr_db()
 
+# Automatically create database when this file is imported
+create_db()
     
 # Look for index
 def lk_i(name):
@@ -90,9 +93,47 @@ def lk_k(n1,n2):
         elif i == n2:
             b.append(Uni_at.k_nc[i])
             print(b)
-            
-# Automatically create database when this file is imported
-create_db()
+
+pd_unc = pd.Series(Uni_at.nchr)
+
+# Unicodes range are listed
+def unc(num1,num2):
+    try:
+        int(num1)
+        int(num2)
+    except:
+        print("You need to input numbers only!!!")
+    else:
+        if num2 > num1:
+            return list(pd_unc[num1:num2])
+        elif num1 > num2:
+            return list(pd_unc[num2:num1])
+
+# Unicodes are coded and compile as dictionary
+def dict_unc(num1, num2):
+    try:
+        int(num1)
+        int(num2)
+    except:
+        print("You need to input numbers only!!!")
+    else:
+        if num2 > num1:
+            if num2 <= 16473 and num1 >= -16473:  
+                return {a:pd_unc[a] for a in range(num1,num2)}
+            else:
+                print("Out of range!!!")
+        elif num1 > num2:
+            if num1 <= 16473 and num2 >= -16473:
+                return {a:pd_unc[a] for a in range(num2,num1)}
+            else:
+                print("Out of range!!!")
+        elif num1 == num2 == 0:
+            return {a:pd_unc[a] for a in range(0,len(pd_unc))}
+        else:
+            if -16473 <= num1 == num2 < 16473:
+                return pd_unc[num1]
+            else:
+                print("No record")
 
 '''
 # Unblock this code to create docx for unicode database.
