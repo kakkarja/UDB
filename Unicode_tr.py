@@ -71,29 +71,8 @@ def create_db():
 
 # Automatically create database when this file is imported
 create_db()
-    
-# Look for index
-def lk_i(name):
-    for i in Uni_at.k_nc:
-        if i == name:
-            return print(Uni_at.k_nc.index(i), 'index number of', name)
-    else:
-        print('There is no such name in the database')
 
-# Look for Items' Value
-def lk_v(num):
-    return print(Uni_at.nchr[Uni_at.k_nc[num]])
-
-# Look for Items' Keys
-def lk_k(n1,n2):
-    b = []
-    for i in range(n1,n2+1):
-        if i < n2:
-            b.append(Uni_at.k_nc[i])
-        elif i == n2:
-            b.append(Uni_at.k_nc[i])
-            print(b)
-
+# Making Data Frame    
 pd_unc = pd.Series(Uni_at.nchr)
 
 # Unicodes range are listed
@@ -105,9 +84,22 @@ def unc(num1,num2):
         print("You need to input numbers only!!!")
     else:
         if num2 > num1:
-            return list(pd_unc[num1:num2])
+            if num2 <= 16473 and num1 >= -16473:  
+                return list(pd_unc[num1:num2])
+            else:
+                print("Out of range!!!")
         elif num1 > num2:
-            return list(pd_unc[num2:num1])
+            if num1 <= 16473 and num2 >= -16473:
+                return list(pd_unc[num2:num1])
+            else:
+                print("Out of range!!!")
+        elif num1 == num2 == 0:
+            return list(pd_unc[:])
+        else:
+            if -16473 <= num1 == num2 < 16473:
+                return pd_unc[num1]
+            else:
+                print("No record")
 
 # Unicodes are coded and compile as dictionary
 def dict_unc(num1, num2):
@@ -129,6 +121,32 @@ def dict_unc(num1, num2):
                 print("Out of range!!!")
         elif num1 == num2 == 0:
             return {a:pd_unc[a] for a in range(0,len(pd_unc))}
+        else:
+            if -16473 <= num1 == num2 < 16473:
+                return pd_unc[num1]
+            else:
+                print("No record")
+
+# Label and unicode compile as dictionary
+def lab_unc(num1, num2):
+    try:
+        int(num1)
+        int(num2)
+    except:
+        print("You need to input numbers only!!!")
+    else:
+        if num2 > num1:
+            if num2 <= 16473 and num1 >= -16473:  
+                return dict(pd_unc[num1:num2])
+            else:
+                print("Out of range!!!")
+        elif num1 > num2:
+            if num1 <= 16473 and num2 >= -16473:
+                return dict(pd_unc[num2:num1])
+            else:
+                print("Out of range!!!")
+        elif num1 == num2 == 0:
+            return dict(pd_unc[:])
         else:
             if -16473 <= num1 == num2 < 16473:
                 return pd_unc[num1]
